@@ -43,7 +43,8 @@ def extract_music(soup):
                 if nb.pitch: # 音符
                     pitch_list.append([cur_time,
                                        nb.pitch.step.string, 
-                                       nb.pitch.octave.string])
+                                       nb.pitch.octave.string,
+                                       nb.staff.string])
                 if nb.rest: # 休符
                     pass
                 if nb.duration: # 装飾音はdurationないので飛ばす
