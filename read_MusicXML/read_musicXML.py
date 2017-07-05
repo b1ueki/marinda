@@ -50,17 +50,6 @@ def extract_music(soup):
                     tmp_duration= int(nb.duration.string)
     return pitch_list
 
-
-def show_graph(data):
-    """ Show time series graph of given data. """
-    height_list = sorted([[p[0], height(p[1:])] for p in data],
-                         key=lambda x: x[0])
-    df = pd.DataFrame(height_list)
-    df.columns = ["time","height"]
-    seaborn.jointplot('time', 'height', data=df)
-    plt.show()
-    
-
 def print_info(soup):
     """ Print information of score. """
     print u"%s/%s" % (soup.attributes.beats.string,
