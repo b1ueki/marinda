@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import seaborn
 import pandas as pd
+import os
 
 
 def height(pitch):
@@ -42,7 +43,7 @@ def extract_music(soup):
                     cur_time += tmp_duration
                 if nb.pitch: # 音符
                     pitch_list.append([cur_time,
-                                       nb.pitch.step.string, 
+                                       nb.pitch.step.string,
                                        nb.pitch.octave.string,
                                        nb.staff.string])
                 if nb.rest: # 休符
@@ -56,15 +57,28 @@ def print_info(soup):
     print u"%s/%s" % (soup.attributes.beats.string,
                             soup.attributes.find("beat-type").string)
     print u"division: %s" % soup.attributes.divisions.string
-    print find_key(soup.attributes.key.mode.string.encode("utf-8"), 
-                   int(soup.attributes.key.fifths.string.encode("utf-8")))
+    #print find_key(soup.attributes.key.mode.string.encode("utf-8"),
+                   #int(soup.attributes.key.fifths.string.encode("utf-8")))
 
 
 
 if __name__ == "__main__":
     xml_name = "lg-203466147999847691.xml"# Your MusicXML file
+    dir_name = xml_name.rstrip('.xml')# Directory name for this MusicXML file
     soup = BeautifulSoup(open(xml_name,'r').read(), "lxml")
+
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
+    main = open(dir_name + '/main.txt', 'w+')
+    sub = open(dir_name + '/sub.txt', 'w+')
 
     print_info(soup)
     music_data = extract_music(soup)
-    print music_data
+
+    for item in music_data:#Separate by staff
+        if item[3] == u'1':
+            main.write("%s\n" % item)
+        else:
+            sub.write("%s\n" % item)
+    main.close()
+    sub.close()
