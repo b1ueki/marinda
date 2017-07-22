@@ -42,7 +42,7 @@ def extract_music(soup):
                 if not nb.chord: # 和音でなければ
                     cur_time += tmp_duration
                 if nb.pitch: # 音符
-                    pitch_list.append([cur_time,
+                    pitch_list.append([nb.type.string,
                                        nb.pitch.step.string,
                                        nb.pitch.octave.string,
                                        nb.staff.string])
@@ -75,21 +75,21 @@ if __name__ == "__main__":
     print_info(soup)
     music_data = extract_music(soup)
 
-    main.write("%s/" % soup.attributes.beats.string)
-    main.write("%s\n" % soup.attributes.find("beat-type").string)
-    main.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
-    main.write("\n")
-    sub.write("%s/" % soup.attributes.beats.string)
-    sub.write("%s\n" % soup.attributes.find("beat-type").string)
-    sub.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
-    sub.write("\n")
+#    main.write("%s " % soup.attributes.beats.string)
+#    main.write("%s\n" % soup.attributes.find("beat-type").string)
+#    main.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
+#    main.write("\n")
+#    sub.write("%s " % soup.attributes.beats.string)
+#    sub.write("%s\n" % soup.attributes.find("beat-type").string)
+#    sub.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
+#    sub.write("\n")
 
     for i in music_data:#Separate by staff
         if i[3] == u'1':
             for j in i:
                 if j != i[3]:
                     main.write("%s " % j)
-            main.write("\n")
+#            main.write("\n")
         else:
             for j in i:
                 if j != i[3]:

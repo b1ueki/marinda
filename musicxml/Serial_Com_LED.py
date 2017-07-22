@@ -1,18 +1,23 @@
 #coding:utf-8
 
-#シリアル通信で文字をArduino側に送信
-#aが押されたら通信を中止するプログラム
+#シリアル通信でデータをArduino側に送信
 
 import serial
+import time
 
 def main():
-    with serial.Serial('/dev/cu.usbmodem14541', 9600, timeout = 1) as ser:
-        while True:
-            flag = bytes(input(), 'utf-8')
-            ser.write(flag)
-            if(flag == bytes('a', 'utf-8')):
-                break;
-        ser.close()
+    with serial.Serial('/dev/cu.usbmodem14141', 9600, timeout = 1) as ser:
+        f = open('lg-203466147999847691/main.txt', 'r')
+        data = f.read()
+        f.close()
+        str = data.split(' ')
+        counter = 0;
+        for i in str:
+            if counter % 3 == 0:
+                time.sleep(0.25)
+            counter += 1
+            ser.write(i)
+            print i
 
 if __name__ == "__main__":
     main()
