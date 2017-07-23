@@ -25,7 +25,10 @@ def find_key(mode, fifths):
     # check
     if (mode.lower() not in keys) or (fifths<-7 or fifths>7):
         print "mode: str of major or minor, fifth: -7 to +7."
-    return keys[mode.lower()][fifths] + " " +mode.lower()
+    if mode.lower() == "major":
+        return keys[mode.lower()][fifths] + " M "
+    elif mode.lower() == "minor":
+        return keys[mode.lower()][fifhts] + " m "
 
 
 def extract_music(soup):
@@ -72,28 +75,33 @@ if __name__ == "__main__":
     main = open(dir_name + '/main.txt', 'w+')
     sub = open(dir_name + '/sub.txt', 'w+')
 
-    print_info(soup)
     music_data = extract_music(soup)
 
-#    main.write("%s " % soup.attributes.beats.string)
-#    main.write("%s\n" % soup.attributes.find("beat-type").string)
-#    main.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
-#    main.write("\n")
-#    sub.write("%s " % soup.attributes.beats.string)
-#    sub.write("%s\n" % soup.attributes.find("beat-type").string)
-#    sub.write(find_key(soup.attributes.key.mode.string.encode("utf-8"),                int(soup.attributes.key.fifths.string.encode("utf-8"))))
-#    sub.write("\n")
+    main.write(find_key(soup.attributes.key.mode.string.encode("utf-8"), int(soup.attributes.key.fifths.string.encode("utf-8"))))
+    sub.write(find_key(soup.attributes.key.mode.string.encode("utf-8"), int(soup.attributes.key.fifths.string.encode("utf-8"))))
 
     for i in music_data:#Separate by staff
         if i[3] == u'1':
             for j in i:
                 if j != i[3]:
-                    main.write("%s " % j)
-#            main.write("\n")
+                    if j == "half":
+                        main.write("2 ")
+                    elif j == "quarter":
+                        main.write("4 ")
+                    elif j == "eighth":
+                        main.write("8 ")
+                    else:
+                        main.write("%s " % j)
         else:
             for j in i:
                 if j != i[3]:
-                    sub.write("%s " % j)
-            sub.write("\n")
+                    if j == "half":
+                        sub.write("2 ")
+                    elif j == "quarter":
+                        sub.write("4 ")
+                    elif j == "eighth":
+                        sub.write("8 ")
+                    else:
+                        sub.write("%s " % j)
     main.close()
     sub.close()

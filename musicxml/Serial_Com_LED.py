@@ -6,7 +6,7 @@ import serial
 import time
 
 def main():
-    with serial.Serial('/dev/cu.usbmodem14141', 9600, timeout = 1) as ser:
+    with serial.Serial('/dev/cu.usbmodem92', 9600, timeout = 1) as ser:
         f = open('lg-203466147999847691/main.txt', 'r')
         data = f.read()
         f.close()
